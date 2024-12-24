@@ -7,7 +7,7 @@ module.exports = class User {
     try {
       const email = this.email,
         password = this.password;
-      const result = await db.execute("INSERT INTO users VALUES(?,?)", [
+      const result = await db.execute("INSERT INTO users (email,password) VALUES(?,?)", [
         email,
         password,
       ]);
