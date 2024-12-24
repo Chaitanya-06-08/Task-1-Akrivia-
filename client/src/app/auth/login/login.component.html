@@ -1,0 +1,30 @@
+<h1 class="text-center text-2xl">Login :</h1>
+<form
+  #form="ngForm"
+  (ngSubmit)="handleSubmit($event, form)"
+  class="flex flex-col gap-4 items-center py-2"
+>
+  <div class="flex flex-row gap-2">
+    <label for="email">Email</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      class="border-2 border-gray-400 rounded-lg p-2"
+      ngModel
+    />
+  </div>
+  <div class="flex flex-row gap-2">
+    <label for="password">Password</label>
+    <input
+      type="password"
+      id="password"
+      name="password"
+      class="border-2 border-gray-400 rounded-lg p-2"
+      ngModel
+    />
+  </div>
+  <button type="submit" class="bg-green-400 p-4 rounded-lg">Login</button>
+  <p>Don't have an account?</p>
+  <button><a routerLink="signup" class="text-blue-400">Signup</a></button>
+</form>
