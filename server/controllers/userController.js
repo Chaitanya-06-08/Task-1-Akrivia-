@@ -1,7 +1,7 @@
 const User = require("../models/Users");
 const bcrypt = require("bcryptjs");
 
-module.exports.login = async (req, res) => {
+module.exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ msg: "Please enter all fields" });
@@ -10,15 +10,17 @@ module.exports.login = async (req, res) => {
     const user = await User.getUser(email);
     if (!user) return res.status(400).json({ msg: "User does not exist" });
 
-    if(bcrypt.compareSync(password, user.password)){
-        return res.json({ msg: "User logged in successfully" });
-    }
-    else{
-        return res.status(400).json({ msg: "Invalid credentials" });
+    if (bcrypt.compareSync(password, user.password)) {
+      return res
+        .status(200)
+        .json({ status: true, msg: "User logged in successfully", user });
+    } else {
+      return res
+        .status(400)
+        .json({ status: false, msg: "Invalid credentials" });
     }
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ msg: "Server error in logging in" });
+    next(error);
   }
 };
 
@@ -32,9 +34,11 @@ module.exports.signup = async (req, res) => {
     const hashedPassword = bcrypt.hashSync(password, salt);
     const user = new User(email, hashedPassword);
     await user.addUser();
-    return res.json({ msg: "User added successfully" });
+    return (
+      res.status(200).json({ status: true, msg: "User added successfully" })
+    );
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ msg: "Server error in adding user" });
+    next(error);
   }
 };

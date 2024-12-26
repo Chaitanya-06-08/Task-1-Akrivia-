@@ -25,6 +25,9 @@ export class LoginComponent implements OnInit {
       if (response?.status == true) {
         this.router.navigateByUrl('/home');
       }
+      else{
+        console.log('Login failed', response);
+      }
     });
   }
 }
