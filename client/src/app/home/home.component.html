@@ -1,1 +1,18 @@
-<p>Login success!</p>
+<header
+  class="flex flex-row items-center justify-between p-4 bg-slate-100 shadow-xl"
+>
+  <h1 class="text-center text-2xl">Home</h1>
+  <div class="flex flex-row items-center gap-4 relative">
+    @if(showProfileState == true){
+    <div
+      class="flex flex-col justify-center absolute bg-white border-white rounded-lg shadow-lg right-4 top-4 p-4"
+    >
+        <p>Email : {{user?.email}}</p>
+      <button class="text-blue-400" (click)="logout()">Logout</button>
+    </div>
+    }
+    <button type="button" (click)="toggleProfile()">
+      <span class="material-symbols-outlined"> account_circle </span>
+    </button>
+  </div>
+</header>

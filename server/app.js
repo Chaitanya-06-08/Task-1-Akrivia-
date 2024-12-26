@@ -16,12 +16,14 @@ app.use(cookieParser());
 
 const loginRoute = require("./routes/loginRoute");
 const signupRoute = require("./routes/signupRoute");
+const logoutRoute= require("./routes/logoutRoute");
 app.use("/api", loginRoute);
 app.use("/api", signupRoute);
+app.use("/api",logoutRoute)
 app.use((err, req, res, next) => {
   console.log(err);
   
-  res.status(err.status || 500).json({
+  return res.status(err.status || 500).json({
     status: false,
     message: err.message || "Internal Server Error",
   });

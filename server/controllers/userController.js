@@ -12,11 +12,14 @@ module.exports.login = async (req, res, next) => {
     if (!user) return res.status(400).json({ msg: "User does not exist" });
     if (bcrypt.compareSync(password, user.password)) {
       const accessToken = generateAccessToken(user.id);
-      user = { id: user.id, email: user.email, accessToken };
+      const refreshToken = generateAccessToken(user.id);
+      user = { id: user.id, email: user.email, accessToken, refreshToken };
       const options = {
         httpOnly: true,
       };
-      res.cookie("access_token", accessToken, options);
+      res.cookie("accessToken", accessToken, options);
+      res.cookie("refreshToken", refreshToken, options);
+
       return res
         .status(200)
         .json({ status: true, msg: "User logged in successfully", user });
@@ -30,7 +33,7 @@ module.exports.login = async (req, res, next) => {
   }
 };
 
-module.exports.signup = async (req, res) => {
+module.exports.signup = async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ msg: "Please enter all fields" });
@@ -45,6 +48,23 @@ module.exports.signup = async (req, res) => {
       .json({ status: true, msg: "User added successfully" });
   } catch (error) {
     console.error(error);
+    next(error);
+  }
+};
+
+module.exports.logout = async (req, res, next) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ msg: "Please enter all fields" });
+  }
+  try {
+    await User.clearRefreshToken(email);
+    res.clearCookie("refreshToken", { httpOnly: true });
+    res.clearCookie("accessToken", { httpOnly: true });
+    return res
+      .status(200)
+      .json({ status: true, msg: "User logged out successfully" });
+  } catch (error) {
     next(error);
   }
 };

@@ -10,7 +10,7 @@ import { LoginService } from './login.service';
 })
 export class LoginComponent implements OnInit {
   loginService: LoginService = inject(LoginService);
-  router:Router = inject(Router);
+  router: Router = inject(Router);
   ngOnInit(): void {
     console.log('LoginComponent initialized');
   }
@@ -25,9 +25,11 @@ export class LoginComponent implements OnInit {
       if (response?.status == true) {
         console.log(response);
         // document.cookie = `accessToken = ${response?.user?.accessToken}`;
-        this.router.navigateByUrl('/home');
-      }
-      else{
+        localStorage.setItem('user',JSON.stringify(response?.user));
+        this.router.navigateByUrl('/home', {
+          // replaceUrl: true,
+        });
+      } else {
         console.log('Login failed', response);
       }
     });

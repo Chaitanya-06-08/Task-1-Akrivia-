@@ -4,7 +4,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { HomeComponent } from './home/home.component';
 export const routes: Routes = [
   {
-    path:'',
+    path:'login',
     component: LoginComponent,
     title: 'Login',
   },
@@ -19,7 +19,12 @@ export const routes: Routes = [
     title: 'Home',
   },
   {
+    path:'',
+    redirectTo: '/login',
+    pathMatch: 'full',
+  },
+  {
     path:'**',
-    redirectTo: '',
+    redirectTo: 'login',
   }
 ];
