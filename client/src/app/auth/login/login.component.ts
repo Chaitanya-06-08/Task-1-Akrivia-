@@ -23,6 +23,8 @@ export class LoginComponent implements OnInit {
 
     this.loginService.login(email, password).subscribe((response) => {
       if (response?.status == true) {
+        console.log(response);
+        // document.cookie = `accessToken = ${response?.user?.accessToken}`;
         this.router.navigateByUrl('/home');
       }
       else{
