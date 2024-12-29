@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-require('dotenv').config();
+require("dotenv").config();
 app.use(
   cors({
     origin: "http://localhost:4200",
@@ -16,18 +16,21 @@ app.use(cookieParser());
 
 const loginRoute = require("./routes/loginRoute");
 const signupRoute = require("./routes/signupRoute");
-const logoutRoute= require("./routes/logoutRoute");
+const logoutRoute = require("./routes/logoutRoute");
+const verifyToken = require("./routes/verifyToken");
+
 app.use("/api", loginRoute);
 app.use("/api", signupRoute);
-app.use("/api",logoutRoute)
+app.use("/api", logoutRoute);
+app.use("/api", verifyToken);
 app.use((err, req, res, next) => {
   console.log(err);
-  
+
   return res.status(err.status || 500).json({
     status: false,
     message: err.message || "Internal Server Error",
   });
 });
-app.listen(process.env.PORT||3000, () => {
-  console.log(`Server is running on port ${process.env.PORT||3000}`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server is running on port ${process.env.PORT || 3000}`);
 });
