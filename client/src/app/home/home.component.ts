@@ -26,8 +26,6 @@ export class HomeComponent implements OnInit {
     this.showProfileState = !this.showProfileState;
   }
   logout() {
-    console.log(this.user);
-    
     this.http
       .post(this.logoutUrl, { email: this.user?.email }, { withCredentials: true })
       .subscribe((response) => {
