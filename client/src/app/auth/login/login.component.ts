@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpService } from '../../services/http.service';
 import { ToastrService } from 'ngx-toastr';
+import { verifyFormInputs } from '../utils/verifyFormInputs';
 @Component({
   selector: 'app-login',
   imports: [
@@ -34,20 +35,30 @@ export class LoginComponent implements OnInit {
 
     const email = loginForm.form.controls['email'].value;
     const password = loginForm.form.controls['password'].value;
+    const verification = verifyFormInputs(email, password);
+    if (!verification.status) {
+      this.toaster.error(verification.msg);
+      return;
+    }
     this.http
       .post(this.loginUrl, { email, password }, { withCredentials: true })
-      .subscribe((response: any) => {
-        if (response?.status == true) {
-          console.log(response);
-          // document.cookie = `accessToken = ${response?.user?.accessToken}`;
-          // localStorage.setItem('user', JSON.stringify(response?.user));
-          this.router.navigateByUrl('/home', {
-            // replaceUrl: true,
-          });
-        } else {
-          this.toaster.error('Login failed');
-          console.log('Login failed', response);
-        }
+      .subscribe({
+        next: (response: any) => {
+          if (response?.status == true) {
+            console.log(response);
+            // document.cookie = `accessToken = ${response?.user?.accessToken}`;
+            // localStorage.setItem('user', JSON.stringify(response?.user));
+            this.router.navigateByUrl('/home', {
+              // replaceUrl: true,
+            });
+          } else {
+            console.log('Login failed', response);
+          }
+        },
+        error: (err) => {
+          this.toaster.error(err?.error?.msg || 'Login failed');
+          console.log('Login failed', err);
+        },
       });
   }
 }

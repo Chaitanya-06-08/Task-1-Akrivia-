@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpService } from '../../services/http.service';
+import { verifyFormInputs } from '../utils/verifyFormInputs';
 @Component({
   selector: 'app-signup',
   imports: [
@@ -31,15 +32,26 @@ export class SignupComponent {
     console.log(signupForm);
     const email = signupForm.form.controls['email'].value;
     const password = signupForm.form.controls['password'].value;
+    const verification = verifyFormInputs(email, password);
+    if (!verification.status) {
+      this.toaster.error(verification.msg);
+      return;
+    }
     this.http
       .post(this.signupUrl, { email, password }, { withCredentials: true })
-      .subscribe((response: any) => {
-        if (response?.status == true) {
-          this.toaster.success('Signup successful');
-          this.router.navigateByUrl('/login');
-        } else {
-          console.log('Signup failed', response);
-        }
+      .subscribe({
+        next: (response: any) => {
+          if (response?.status == true) {
+            this.toaster.success('Signup successful');
+            this.router.navigateByUrl('/login');
+          } else {
+            console.log('Signup failed', response);
+          }
+        },
+        error: (error) => {
+          console.log('Signup failed', error);
+          this.toaster.error(error?.error?.msg || 'Signup failed');
+        },
       });
   }
   goToLogin() {

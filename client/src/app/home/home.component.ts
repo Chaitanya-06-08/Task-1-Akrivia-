@@ -19,17 +19,20 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     const accessTokenUrl = 'http://localhost:3000/api/verifyAccessToken';
-    this.http
-      .get(accessTokenUrl, { withCredentials: true })
-      .subscribe((response: any) => {
-        console.log(response);
+    this.http.get(accessTokenUrl, { withCredentials: true }).subscribe({
+      next: (response: any) => {
         if (response?.status == false) {
           this.router.navigateByUrl('/login');
         } else {
-          this.user = response?.user
+          this.user = response?.user;
           this.toaster.success(`Logged in successfully as ${this.user?.email}`);
         }
-      });
+      },
+      error: (error) => {
+        console.log('Error verifying access token', error);
+        this.router.navigateByUrl('/login');
+      },
+    });
   }
   toggleProfile() {
     this.showProfileState = !this.showProfileState;
