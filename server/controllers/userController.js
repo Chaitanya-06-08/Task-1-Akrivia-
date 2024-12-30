@@ -1,7 +1,7 @@
 const User = require("../models/Users");
 const bcrypt = require("bcryptjs");
 const { generateAccessToken } = require("../utils/generateAccessToken");
-const {generateRefreshToken} = require("../utils/generateRefreshToken");
+const { generateRefreshToken } = require("../utils/generateRefreshToken");
 module.exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -13,6 +13,7 @@ module.exports.login = async (req, res, next) => {
     if (bcrypt.compareSync(password, user.password)) {
       const accessToken = generateAccessToken(user.email);
       const refreshToken = generateRefreshToken(user.email);
+      await User.setRefreshToken(user.email, refreshToken);
       user = { id: user.id, email: user.email };
       const options = {
         httpOnly: true,

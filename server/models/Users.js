@@ -38,4 +38,15 @@ module.exports = class User {
       throw new Error(error);
     }
   }
+  static async setRefreshToken(email,refreshToken) {
+    try {
+      const result = await db.execute(
+        "UPDATE users SET refresh_token=? WHERE email=?",
+        [refreshToken, email]
+      );
+      return result;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 };
