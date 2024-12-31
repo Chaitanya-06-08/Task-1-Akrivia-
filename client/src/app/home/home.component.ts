@@ -14,11 +14,11 @@ export class HomeComponent implements OnInit {
   http: HttpService = inject(HttpService);
   showProfileState: boolean = false;
   user: { email: string; password: string } | undefined = undefined;
-  private logoutUrl: string = 'http://localhost:3000/api/logout';
+  private logoutUrl: string = 'http://localhost:3000/api/v1/logout';
   toaster: ToastrService = inject(ToastrService);
 
   ngOnInit() {
-    const accessTokenUrl = 'http://localhost:3000/api/verifyAccessToken';
+    const accessTokenUrl = 'http://localhost:3000/api/v1/verifyAccessToken';
     this.http.get(accessTokenUrl, { withCredentials: true }).subscribe({
       next: (response: any) => {
         if (response?.status == false) {

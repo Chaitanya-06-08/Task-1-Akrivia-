@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     console.log('LoginComponent initialized');
   }
-  private loginUrl: string = 'http://localhost:3000/api/login';
+  private loginUrl: string = 'http://localhost:3000/api/v1/login';
   handleSubmit(event: Event, loginForm: NgForm) {
     event.preventDefault();
     console.log(loginForm);
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
           if (response?.status == true) {
             console.log(response);
             // document.cookie = `accessToken = ${response?.user?.accessToken}`;
-            // localStorage.setItem('user', JSON.stringify(response?.user));
+            localStorage.setItem('user', JSON.stringify(response?.user));
             this.router.navigateByUrl('/home', {
               // replaceUrl: true,
             });

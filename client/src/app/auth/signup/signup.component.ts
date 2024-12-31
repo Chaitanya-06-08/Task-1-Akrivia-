@@ -26,7 +26,7 @@ export class SignupComponent {
   http: HttpService = inject(HttpService);
   router: Router = inject(Router);
   toaster: ToastrService = inject(ToastrService);
-  private signupUrl: string = 'http://localhost:3000/api/signup';
+  private signupUrl: string = 'http://localhost:3000/api/v1/signup';
   handleSubmit(event: Event, signupForm: NgForm) {
     event.preventDefault();
     console.log(signupForm);

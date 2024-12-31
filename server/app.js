@@ -14,15 +14,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const loginRoute = require("./routes/loginRoute");
-const signupRoute = require("./routes/signupRoute");
-const logoutRoute = require("./routes/logoutRoute");
-const verifyToken = require("./routes/verifyToken");
+const routes = require('./routes/Routes')
 
-app.use("/api", loginRoute);
-app.use("/api", signupRoute);
-app.use("/api", logoutRoute);
-app.use("/api", verifyToken);
+app.use("/api",routes);
+
 app.use((err, req, res, next) => {
   console.log(err);
 
