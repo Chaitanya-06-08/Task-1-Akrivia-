@@ -7,6 +7,7 @@ router.get("/verifyAccessToken", verifyToken, async (req, res, next) => {
     try {
       let user = await User.getUser(req.user.email);
       user = { id: user.id, email: user.email };
+      res.cookie("accessToken", req.cookies.accessToken, { httpOnly: true });
       return res.status(200).json({ status: true, msg: "Authorized", user });
     } catch (error) {
       next(error);
