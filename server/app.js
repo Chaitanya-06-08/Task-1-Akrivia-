@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config();
+const dbSetup = require("./config/objectionModelWithKnex");
+dbSetup();
 app.use(
   cors({
     origin: "http://localhost:4200",
@@ -14,9 +16,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const routes = require('./routes/Routes')
+const routes = require("./routes/Routes");
 
-app.use("/api",routes);
+app.use("/api", routes);
 
 app.use((err, req, res, next) => {
   console.log(err);

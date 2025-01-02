@@ -1,5 +1,4 @@
 const { faker } = require("@faker-js/faker");
-const knex = require("knex");
 module.exports.generateRandomPersonData = (count = 1000) => {
   const people = [];
   for (let i = 0; i < count; i++) {

@@ -5,7 +5,7 @@
 exports.up = function (knex) {
   knex.schema.hasTable("people").then((exists) => {
     if (exists) {
-      return;
+      return Promise.resolve();
     }
     return knex.schema.createTable("people", (table) => {
       table.uuid("id").primary().defaultTo(knex.fn.uuid());
