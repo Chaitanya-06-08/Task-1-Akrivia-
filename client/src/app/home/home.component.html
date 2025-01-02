@@ -1,3 +1,8 @@
+@if(loading){
+<div class="flex items-center justify-center">
+  <app-loading></app-loading>
+</div>
+} @else{
 <header
   class="flex flex-row items-center justify-between p-4 bg-slate-100 shadow-xl"
 >
@@ -7,8 +12,10 @@
     <div
       class="flex flex-col justify-center absolute bg-white border-white rounded-lg shadow-lg right-4 top-4 p-4"
     >
-        <p>Email : {{user?.email}}</p>
-      <button mat-raised-button class="text-blue-400" (click)="logout()">Logout</button>
+      <p>Email : {{ user?.email }}</p>
+      <button mat-raised-button class="text-blue-400" (click)="logout()">
+        Logout
+      </button>
     </div>
     }
     <button type="button" (click)="toggleProfile()">
@@ -16,3 +23,4 @@
     </button>
   </div>
 </header>
+}

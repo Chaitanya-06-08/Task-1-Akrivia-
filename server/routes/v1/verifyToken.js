@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { verifyToken } = require("../../middleware/verifyToken");
-const User = require("../../models/Users");
+const User = require("../../services/Users");
 router.get("/verifyAccessToken", verifyToken, async (req, res, next) => {
   if (req.user.email) {
     try {

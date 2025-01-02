@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpService } from '../services/http.service';
+import { LoadingComponent } from "../loading/loading.component";
 @Component({
   selector: 'app-home',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, LoadingComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -16,7 +17,7 @@ export class HomeComponent implements OnInit {
   user: { email: string; password: string } | undefined = undefined;
   private logoutUrl: string = 'http://localhost:3000/api/v1/logout';
   toaster: ToastrService = inject(ToastrService);
-
+  loading: boolean = true;
   ngOnInit() {
     const accessTokenUrl = 'http://localhost:3000/api/v1/verifyAccessToken';
     this.http.get(accessTokenUrl, { withCredentials: true }).subscribe({
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit {
           this.router.navigateByUrl('/login');
         } else {
           this.user = response?.user;
+          this.loading = false;
           this.toaster.success(`Logged in successfully as ${this.user?.email}`);
         }
       },
