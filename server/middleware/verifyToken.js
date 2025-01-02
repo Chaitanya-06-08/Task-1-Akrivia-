@@ -12,12 +12,18 @@ module.exports.verifyToken = (req, res, next) => {
         process.env.REFRESH_TOKEN_SECRET,
         (err, payload) => {
           if (err)
-            return res.status(401).json({ status: false, msg: "Unauthorized" });
+            return res
+              .status(401)
+              .json({ status: false, msg: err.message || "Token expired" });
           req.cookies.accessToken = generateAccessToken(payload.email);
           req.user = { email: payload.email };
           next();
         }
       );
+    } else if (err instanceof jwt.JsonWebTokenError) {
+      return res
+        .status(401)
+        .json({ status: false, msg: err.message || "Unauthorized" });
     }
     req.user = { email: payload.email };
     next();
