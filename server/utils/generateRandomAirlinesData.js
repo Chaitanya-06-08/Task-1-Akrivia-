@@ -10,7 +10,6 @@ module.exports.generateRandomAirlinesData = (count = 1) => {
   const userIds = [1, 2, 3];
   for (let i = 0; i < count; i++) {
     airlines.push({
-      id: faker.string.uuid(),
       airlineName: faker.company.name(),
       flightNumber: faker.string.alphanumeric({ length: 6, casing: "upper" }),
       departureAirport: faker.location.city(),
@@ -27,3 +26,5 @@ module.exports.generateRandomAirlinesData = (count = 1) => {
   }
   return airlines;
 };
+
+module.exports.returnTimeStamp = returnTimeStamp;

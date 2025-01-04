@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { verifyToken } = require("../../middleware/verifyToken");
-const User = require("../../services/Users");
-router.get("/verifyAccessToken", verifyToken, async (req, res, next) => {
+const { verifyTokenMiddleware } = require("../../middleware/verifyToken");
+const User = require("../../services/userService");
+router.get("/verifyAccessToken", verifyTokenMiddleware, async (req, res, next) => {
   if (req.user.email) {
     try {
       let user = await User.getUser(req.user.email);
