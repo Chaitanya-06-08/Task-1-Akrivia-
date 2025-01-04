@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-const generateAccessToken = require("../utils/generateAccessToken");
-module.exports.verifyToken = (req, res, next) => {
+const { generateAccessToken } = require("../utils/generateAccessToken");
+module.exports.verifyTokenMiddleware = (req, res, next) => {
   const accessToken = req.cookies.accessToken;
   const refreshToken = req.cookies.refreshToken;
   if (!accessToken)
@@ -24,8 +24,12 @@ module.exports.verifyToken = (req, res, next) => {
       return res
         .status(401)
         .json({ status: false, msg: err.message || "Unauthorized" });
+    } else if (err) {
+      return res
+        .status(401)
+        .json({ status: false, msg: err.message || "Unauthorized" });
     }
-    req.user = { email: payload.email };
+    req.user = { email: payload?.email };
     next();
   });
 };
