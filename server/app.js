@@ -8,7 +8,7 @@ const dbSetup = require("./config/objectionModelWithKnex");
 dbSetup();
 app.use(
   cors({
-    origin: "http://localhost:4200",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
