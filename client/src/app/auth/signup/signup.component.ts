@@ -7,8 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { HttpService } from '../../services/http.service';
+import { HttpService } from '../../core/services/http.service';
 import { verifyFormInputs } from '../utils/verifyFormInputs';
+import { signupUrl } from '../../../environments/environments';
 @Component({
   selector: 'app-signup',
   imports: [
@@ -26,7 +27,6 @@ export class SignupComponent {
   http: HttpService = inject(HttpService);
   router: Router = inject(Router);
   toaster: ToastrService = inject(ToastrService);
-  private signupUrl: string = 'http://localhost:3000/api/v1/signup';
   handleSubmit(event: Event, signupForm: NgForm) {
     event.preventDefault();
     console.log(signupForm);
@@ -38,7 +38,7 @@ export class SignupComponent {
       return;
     }
     this.http
-      .post(this.signupUrl, { email, password }, { withCredentials: true })
+      .post(signupUrl, { email, password }, { withCredentials: true })
       .subscribe({
         next: (response: any) => {
           if (response?.status == true) {
