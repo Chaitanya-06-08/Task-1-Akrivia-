@@ -6,7 +6,7 @@ exports.up = function (knex) {
   knex.schema.hasTable("airlines").then((exists) => {
     if (!exists) {
       return knex.schema.createTable("airlines", (table) => {
-        table.uuid("id").primary();
+        table.increments("id").primary();
         table.string("airline_name").notNullable();
         table.string("flight_number").notNullable();
         table.string("departure_airport").notNullable();
@@ -21,13 +21,14 @@ exports.up = function (knex) {
         table
           .integer("user_id")
           .unsigned()
+          .notNullable()
           .references("id")
           .inTable("users")
           .onDelete("CASCADE");
         table.timestamps(true, true);
       });
     }
-    return Promise.resolve();
+    return new Promise((resolve)=>resolve());
   });
 };
 

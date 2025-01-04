@@ -5,7 +5,7 @@
 exports.up = function (knex) {
   knex.schema.hasTable("users").then((exists) => {
     if (exists) {
-      return Promise.resolve();
+      return new Promise((resolve) => resolve());
     }
     return knex.schema.createTable("users", (table) => {
       table.increments("id").primary();

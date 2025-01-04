@@ -18,7 +18,7 @@ exports.up = function (knex) {
         table.timestamps(true, true);
       });
     }
-    return Promise.resolve()
+    return new Promise((resolve) => resolve());
   });
 };
 
