@@ -1,0 +1,20 @@
+<div class="relative flex flex-row items-center">
+  <input
+    type="text"
+    [placeholder]="placeholder"
+    [(ngModel)]="searchTerm"
+    (input)="onSearch()"
+    [class]="customClass"
+  />
+  @if(searchTerm){
+  <app-button
+    [label]="'X'"
+    [customClass]="
+      'bg-white text-gray-500 hover:text-gray-700 rounded-2xl px-2'
+    "
+    (clicked)="onClearSearch()"
+    class="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+  >
+  </app-button>
+  }
+</div>
