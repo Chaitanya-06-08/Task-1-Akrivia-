@@ -1,5 +1,6 @@
 const { Model } = require("objection");
-const FilesModel = require("../../db/models/Files");
+const FilesModel = require("../models/Files");
+const AirlinesModel = require("../models/Airlines");
 class User extends Model {
   static get tableName() {
     return "users";
@@ -15,6 +16,18 @@ class User extends Model {
         join: {
           from: "users.id",
           to: "files.user_id",
+        },
+      },
+    };
+  }
+  static get relationMappings() {
+    return {
+      airlines: {
+        relation: Model.HasManyRelation,
+        modelClass: AirlinesModel,
+        join: {
+          from: "users.id",
+          to: "airlines.user_id",
         },
       },
     };
