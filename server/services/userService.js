@@ -8,8 +8,7 @@ module.exports = class User {
       const email = this.email,
         password = this.password;
       const result = await UserModel.query().insert({ email, password });
-      console.log(result);
-      console.log("insertion success");
+      return result;
     } catch (error) {
       throw new Error(error);
     }
