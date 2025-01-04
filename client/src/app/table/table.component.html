@@ -1,0 +1,106 @@
+<div class="sticky top-2 flex flex-row justify-end items-center px-4 gap-2">
+  <div class="flex flex-row items-center gap-2">
+    <label class="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg">
+      <input
+        type="file"
+        name="xlSheet"
+        id="xlSheet"
+        class="w-full h-full hidden"
+        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+        (change)="onFileChange($event)"
+      />
+      @if(file){ Change File } @else{ Upload XL Sheet Data }
+    </label>
+    @if(file){
+    <div class="flex flex-row items-center gap-2">
+      <app-button
+        [label]="'Submit'"
+        (clicked)="onFileSubmit($event)"
+      ></app-button>
+      <p>{{ file.name }}</p>
+    </div>
+    }
+  </div>
+  <app-search-bar [searchTerm]="searchTerm" (search)="onSearch($event)"> </app-search-bar>
+</div>
+
+@if(loading){
+<div class="flex items-center justify-center w-screen h-screen">
+  <app-loading></app-loading>
+</div>
+} @else if(table.rows.length > 0) {
+<div class="w-screen p-4">
+  <div class="overflow-x-scroll">
+    <table class="table-auto border-collapse border border-gray-300 w-full">
+      <thead class="bg-gray-200">
+        <tr>
+          @for(column of table.columns;track $index){
+          <th class="border border-gray-300 px-4 py-2 text-left">
+            {{ column }}
+          </th>
+          }
+          <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(row of table.rows;track $index;let rowIndex = $index){
+        <tr class="hover:bg-gray-100">
+          @for(column of table.columns;track $index){
+
+          <ng-container>
+            <td class="border border-gray-300 px-4 py-2">
+              {{ row[column] }}
+            </td>
+          </ng-container>
+          }
+          <td class="border border-gray-300 px-4 py-2">
+            <app-button
+              [label]="'Edit'"
+              [type]="'button'"
+              [customClass]="'bg-blue-500 text-white px-4 py-2 rounded-lg'"
+              (clicked)="onEdit(row['id'])"
+            >
+            </app-button>
+            <app-button
+              [label]="'Delete'"
+              [type]="'button'"
+              [customClass]="'bg-red-500 text-white px-4 py-2 rounded-lg'"
+              (clicked)="onDelete(row['id'])"
+            >
+            </app-button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <div class="flex justify-end gap-3 items-center mt-4">
+    <p class="text-right font-bold">
+      Showing {{ (pageNumber - 1) * pageCount + 1 }} -
+      {{ pageNumber * pageCount }} of {{ totalCount }}
+    </p>
+    <app-button
+      [label]="'Previous'"
+      [type]="'button'"
+      [customClass]="'bg-blue-500 text-white px-4 py-2 rounded-lg'"
+      [disabled]="pageNumber === 1"
+      (clicked)="onPrevious($event)"
+    >
+    </app-button>
+    <app-button
+      [label]="'Next'"
+      [type]="'button'"
+      [customClass]="'bg-blue-500 text-white px-4 py-2 rounded-lg'"
+      [disabled]="checkIfLastPage()"
+      (clicked)="onNext($event)"
+    >
+    </app-button>
+  </div>
+</div>
+} @else if(searchTerm){
+<div class="text-center text-gray-500 py-4">
+  No data available for the search term
+</div>
+} @else {
+<div class="text-center text-gray-500 py-4">No data available</div>
+}
