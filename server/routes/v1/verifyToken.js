@@ -3,7 +3,7 @@ const router = express.Router();
 const { verifyTokenMiddleware } = require("../../middleware/verifyToken");
 const User = require("../../services/userService");
 router.get("/verifyAccessToken", verifyTokenMiddleware, async (req, res, next) => {
-  if (req.user.email) {
+  if (req.user?.email) {
     try {
       let user = await User.getUser(req.user.email);
       user = { id: user.id, email: user.email };
@@ -13,6 +13,5 @@ router.get("/verifyAccessToken", verifyTokenMiddleware, async (req, res, next) =
       next(error);
     }
   }
-  return res.status(403).json({ status: false, msg: "Forbidden" });
 });
 module.exports = router;
